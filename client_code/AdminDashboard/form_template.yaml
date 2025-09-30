@@ -1,0 +1,25 @@
+components:
+- components:
+  - name: repeating_panel_1
+    properties: {item_template: AdminDashboard.RowTemplate2}
+    type: RepeatingPanel
+  layout_properties: {grid_position: 'KHQBSZ,XUMJEY'}
+  name: issues_grid
+  properties:
+    columns:
+    - {data_key: title, id: JKSDUP, title: Title}
+    - {data_key: description, id: VJQQOR, title: Description}
+    - {data_key: urgency, id: OJLQEN, title: Urgency}
+    - {data_key: status, id: MOFOCZ, title: Status}
+    - {data_key: location, id: IQREQB, title: Location}
+    - {data_key: assigned_to, id: REQACM, title: Assigned To}
+  type: DataGrid
+- event_bindings: {click: assign_btn_click}
+  layout_properties: {grid_position: 'HOJHKC,QMRALT'}
+  name: assign_btn
+  properties:
+    text: |
+      Assign
+  type: Button
+container: {type: ColumnPanel}
+is_package: true

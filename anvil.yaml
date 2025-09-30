@@ -1,10 +1,104 @@
 allow_embedding: false
 db_schema:
+  issues:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: title
+      type: string
+    - admin_ui: {width: 200}
+      name: description
+      type: string
+    - admin_ui: {width: 200}
+      name: urgency
+      type: string
+    - admin_ui: {width: 200}
+      name: status
+      type: string
+    - admin_ui: {width: 200}
+      name: assigned_to
+      target: users
+      type: link_single
+    - admin_ui: {width: 200}
+      name: created_by
+      target: users
+      type: link_single
+    - admin_ui: {width: 200}
+      name: created_at
+      type: datetime
+    - admin_ui: {width: 200}
+      name: resolved_at
+      type: datetime
+    - admin_ui: {width: 200}
+      name: location
+      target: location
+      type: link_single
+    server: full
+    title: issues
+  location:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: school
+      target: school
+      type: link_single
+    - admin_ui: {width: 200}
+      name: branch
+      type: string
+    - admin_ui: {width: 200}
+      name: floor
+      type: string
+    - admin_ui: {width: 200}
+      name: room
+      type: string
+    server: full
+    title: location
+  school:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: school_name
+      type: string
+    - admin_ui: {width: 200}
+      name: campus
+      type: string
+    - admin_ui: {width: 200}
+      name: address
+      type: string
+    - admin_ui: {width: 200}
+      name: school_code
+      type: string
+    server: full
+    title: school
   users:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {width: 200}
+      name: email
+      type: string
+    - admin_ui: {width: 200}
+      name: password_hash
+      type: string
+    - admin_ui: {width: 200}
+      name: name
+      type: string
+    - admin_ui: {width: 200}
+      name: role
+      type: string
+    - admin_ui: {width: 200}
+      name: enabled
+      type: bool
+    - admin_ui: {width: 200}
+      name: last_login
+      type: datetime
+    - admin_ui: {width: 200}
+      name: n_password_failures
+      type: number
+    - admin_ui: {width: 200}
+      name: confirmed_email
+      type: bool
     server: full
-    title: Users
+    title: users
 dependencies: []
 metadata: {logo_img: 'asset:9b289a8980debf9a7951a2b94cc42673.jpg', title: task manager for IT}
 name: computer science IA
