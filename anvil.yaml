@@ -100,6 +100,9 @@ db_schema:
     - admin_ui: {order: 8, width: 200}
       name: signed_up
       type: datetime
+    - admin_ui: {width: 200}
+      name: email_confirmation_key
+      type: string
     server: full
     title: users
 dependencies: []
