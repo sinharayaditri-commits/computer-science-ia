@@ -33,6 +33,9 @@ db_schema:
       name: location
       target: location
       type: link_single
+    - admin_ui: {order: 9, width: 200}
+      name: reporter_email
+      type: string
     server: full
     title: issues
   location:
