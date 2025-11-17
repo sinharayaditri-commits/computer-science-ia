@@ -15,17 +15,17 @@ class Form1(Form1Template):
 
     print('User object:', user)
     print('Role property:', user['role'] if 'role' in user else None)
-
-    if user:
-      role = user['role'] if 'role' in user else None
-      if role == 'admin':
-        from ..AdminDashboard import AdminDashboard
-        self.clear()
-        self.add_component(AdminDashboard())
-      elif role == 'teacher':
-        from ..TeacherDashboard import TeacherDashboard
-        self.clear()
-        self.add_component(TeacherDashboard())
+    
+    user = anvil.users.get_user()
+    if not user:
+      open_form('LoginForm')
+    elif user['job_type'] == 'Admin':
+      open_form('AdminDashboard')
+    elif user['job_type'] == 'Teacher':
+      open_form('TeacherDashboard')
+    else:
+      alert("Unknown job type. Contact admin.")
+      open_form('LoginForm')
       else:
         anvil.users.logout()
         anvil.alert("Unknown user role. Please contact the administrator.")
