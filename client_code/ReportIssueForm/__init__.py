@@ -1,10 +1,10 @@
-from ._anvil_designer import report_issue_formTemplate
+from ._anvil_designer import ReportIssueFormTemplate
 import anvil.tables as tables
 from anvil.tables import app_tables
 import anvil.users
 import anvil.server
 
-class report_issue_form(report_issue_formTemplate):
+class ReportIssueForm(ReportIssueFormTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
 

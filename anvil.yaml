@@ -79,33 +79,22 @@ db_schema:
     - admin_ui: {width: 200}
       name: email
       type: string
-    - admin_ui: {width: 200}
-      name: password_hash
+    - admin_ui: {order: 1, width: 200}
+      name: password
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: -1, width: 200}
       name: name
       type: string
     - admin_ui: {width: 200}
       name: role
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 6, width: 200}
       name: enabled
       type: bool
-    - admin_ui: {width: 200}
-      name: last_login
-      type: datetime
-    - admin_ui: {width: 200}
-      name: n_password_failures
-      type: number
-    - admin_ui: {width: 200}
-      name: confirmed_email
-      type: bool
-    - admin_ui: {order: 8, width: 200}
-      name: signed_up
-      type: datetime
-    - admin_ui: {width: 200}
-      name: email_confirmation_key
-      type: string
+    - admin_ui: {order: 5, width: 200}
+      name: school_code
+      target: school
+      type: link_multiple
     server: full
     title: users
 dependencies: []
@@ -122,7 +111,8 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/tables.yml
-- client_config: {allow_signup: true, confirm_email: true, enable_automatically: true, use_email: true}
+- client_config: {allow_signup: false, confirm_email: false, enable_automatically: false, use_email: false}
   server_config: {user_table: users}
   source: /runtime/services/anvil/users.yml
-startup_form: Form1
+startup: {module: StartupForm, type: form}
+startup_form: null
