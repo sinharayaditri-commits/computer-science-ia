@@ -11,10 +11,8 @@ class LoginForm(LoginFormTemplate):
   def login_btn_click(self, **event_args):
     email = self.email_box.text.strip()
     password = self.password_box.text
-
-    if not email or not password:
-      anvil.alert("Please enter email and password.")
-      return
+   # anvil.alert(" this statement")
+    
 
     try:
       user = anvil.users.login_with_email(email, password)

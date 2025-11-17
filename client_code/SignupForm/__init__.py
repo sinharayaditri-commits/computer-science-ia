@@ -8,33 +8,47 @@ class SignupForm(SignupFormTemplate):
 
   def __init__(self, **properties):
     self.init_components(**properties)
+    self.password_box.hide_text = True   # Make password hidden
 
   def signup_btn_click(self, **event_args):
+    "3When the user clicks the Sign Up button"
+
     name = self.name_box.text.strip()
     email = self.email_box.text.strip()
     password = self.password_box.text
+    school_code = self.school_code_box.text.strip()
 
     # Basic validation
-    if not name or not email or not password:
-      anvil.alert("Please fill in name, email and password.")
-      return
+    if not name or not email or not password or not school_code:
+     anvil.alert("Please fill all fields.")
+    return
 
     try:
-      # Create the user account via Anvil Users service
-      user = anvil.users.signup_with_email(email, password)
+      # Create the Anvil user
+     # user = anvil.users.signup_with_email(email, password)
 
-      # Add a row in your app_users table (recommended)
-      # Make sure you have an App Table called "users" (app_tables.users)
+      # Default everyone to teacher (unless you choose otherwise)
+      role = "teacher"
+
+      # Save user info in your app table
       app_tables.users.add_row(
-        anvil_user=user,    # link to the Anvil User object
-        name=name,
-        email=email,
-        role="teacher"      # default role; admin can change later
+        name=self.name_box,
+        email=self.email_box,
+        school_code=self.school_code_box,
+        password=self.password_box,
+        role = "teacher"
+        
       )
 
-      anvil.alert("Sign-up successful. Please log in.")
-      open_form("LoginForm")
+      # Redirect based on role
+      if role == "admin":
+        open_form("AdminDashboard")
+      else:
+        open_form("TeacherDashboard")
 
     except Exception as e:
-      # Show a helpful error to you (you can change this text later)
-      anvil.alert(f"Sign-up failed: {e}")
+      anvil.alert(f"Error: {e}")
+
+  def email_box_pressed_enter(self, **event_args):
+    "This method is called when the user presses Enter in this text box"
+    pass
