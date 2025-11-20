@@ -4,7 +4,8 @@ components:
     name: email_label
     properties: {text: 'Email:'}
     type: Label
-  - layout_properties: {grid_position: 'VLRURG,KGTANO'}
+  - event_bindings: {pressed_enter: email_box_pressed_enter}
+    layout_properties: {grid_position: 'VLRURG,KGTANO'}
     name: email_box
     properties: {text: ''}
     type: TextBox
@@ -12,12 +13,13 @@ components:
     name: password_label
     properties: {text: 'Password:'}
     type: Label
-  - event_bindings: {hide: password_box_hide}
+  - event_bindings: {hide: password_box_hide, pressed_enter: password_box_pressed_enter}
     layout_properties: {grid_position: 'JJVYMN,REEOIH'}
     name: password_box
-    properties: {hide_text: false, visible: true}
+    properties: {hide_text: true, visible: true}
     type: TextBox
-  - layout_properties: {grid_position: 'QEWYIC,ZHOCWL'}
+  - event_bindings: {click: login_btn_click}
+    layout_properties: {grid_position: 'QEWYIC,ZHOCWL'}
     name: login_btn
     properties: {text: log in}
     type: Button
