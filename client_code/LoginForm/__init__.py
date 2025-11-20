@@ -4,54 +4,57 @@ from anvil import open_form
 from anvil.tables import app_tables
 import anvil
 
-class LoginForm(LoginFormTemplate):   # <-- THIS MUST MATCH THE FORM NAME EXACTLY
-
+class LoginForm(LoginFormTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
 
   def login_btn_click(self, **event_args):
+    """Handle login"""
     email = self.email_box.text.strip()
-    password = self.password_box.text
+    password = self.password_box.text.strip()
+
+    if not email or not password:
+      anvil.alert("Please enter email and password.")
+      return
 
     try:
+      # Authenticate with Anvil
       user = anvil.users.login_with_email(email, password)
     except anvil.users.AuthenticationFailed:
       anvil.alert("Incorrect email or password.")
       return
 
-    # Get UID
-    uid = user.get_id()
-
-    # Match UID to user_profiles table
-    user_row = app_tables.user_profiles.get(anvil_user=uid)
-
-    if not user_row:
-      anvil.alert("Your profile data is missing. Contact admin.")
-      return
-
-    # Block unapproved admin accounts
-    if user_row['role'] == "admin" and user_row['status'] == "pending":
-      anvil.alert("Your admin request is still pending approval.")
+      # Get user details from Users table
+    try:
+      user_data = app_tables.users.get(email=email)
+    except:
+      anvil.alert("User profile not found. Contact admin.")
       anvil.users.logout()
       return
 
-    # Determine role
-    role = user_row['role'] if user_row['role'] else "teacher"
+    role = user_data.get('role', 'teacher')
+    status = user_data.get('status', 'pending')
 
-    # Redirect
-    if role == "admin":
+    # Check if admin is approved
+    if role == 'admin' and status != 'approved':
+      anvil.alert("Your admin account is pending approval. Check your email.")
+      anvil.users.logout()
+      return
+
+      # Redirect based on role
+    if role == 'admin':
       open_form("AdminDashboard")
     else:
       open_form("TeacherDashboard")
 
   def password_box_pressed_enter(self, **event_args):
+    """Allow Enter key to submit"""
     self.login_btn_click()
 
-  def signup_btn_click(self, **event_args):
-    open_form("SignupForm")
-
   def signup_link_click(self, **event_args):
+    """Navigate to signup"""
     open_form("SignupForm")
 
   def email_box_pressed_enter(self, **event_args):
+    """Tab to password on Enter"""
     self.password_box.focus()
