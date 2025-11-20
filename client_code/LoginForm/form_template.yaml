@@ -16,7 +16,7 @@ components:
   - event_bindings: {hide: password_box_hide, pressed_enter: password_box_pressed_enter}
     layout_properties: {grid_position: 'JJVYMN,REEOIH'}
     name: password_box
-    properties: {hide_text: true, visible: true}
+    properties: {hide_text: false, visible: true}
     type: TextBox
   - event_bindings: {click: login_btn_click}
     layout_properties: {grid_position: 'QEWYIC,ZHOCWL'}

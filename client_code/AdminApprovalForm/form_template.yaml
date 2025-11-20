@@ -1,0 +1,37 @@
+components:
+- components:
+  - components:
+    - name: repeating_panel_1
+      properties: {item_template: AdminApprovalForm.RowTemplate5}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'SCHMQC,XULHFO'}
+    name: data_grid_1
+    properties:
+      columns:
+      - {data_key: email, id: PNLJRI, title: email}
+      - {data_key: name, id: LRXVCV, title: name}
+    type: DataGrid
+  - layout_properties: {grid_position: 'FHZYYC,MQXVKB'}
+    name: approve_btn
+    properties: {text: Approve}
+    type: Button
+  - layout_properties: {grid_position: 'FHZYYC,QIMYFD'}
+    name: reject_btn
+    properties: {text: Reject}
+    type: Button
+  - layout_properties: {grid_position: 'MGOSRV,URJGWR'}
+    name: continue_to_dashboard_btn
+    properties: {text: Continue to Dashboard}
+    type: Button
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {}
+  type: ColumnPanel
+- layout_properties: {slot: title}
+  name: label_1
+  properties: {text: Pending Admin Approvals}
+  type: Label
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true

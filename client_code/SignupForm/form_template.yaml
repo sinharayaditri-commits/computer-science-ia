@@ -43,12 +43,8 @@ components:
   name: content_panel
   properties: {}
   type: ColumnPanel
-- layout_properties: {slot: nav-right}
-  name: navbar_links
-  properties: {}
-  type: FlowPanel
 - layout_properties: {slot: title}
-  name: label_1
+  name: title_label
   properties: {text: Maintenance App Sign Up}
   type: Label
 container:

@@ -1,50 +1,45 @@
 from ._anvil_designer import AdminDashboardTemplate
-import anvil.users
 import anvil.server
-from anvil.tables import app_tables
+from anvil import open_form
+import anvil.users
 import anvil
 
 class AdminDashboard(AdminDashboardTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    self.refresh_issues()
+    self.load_dashboard()
 
-  def refresh_issues(self):
-    issue_rows = app_tables.issues.search()
-    issues_list = []
-    for issue in issue_rows:
-      # Get linked location details
-      loc = issue['location']
-      loc_text = ""
-      if loc is not None:
-        loc_text = f"{loc['branch']} / {loc['floor']} / {loc['room']}"
-      # Get assigned_to name
-      assigned_to = issue['assigned_to']
-      assigned_name = assigned_to['name'] if assigned_to is not None else "Unassigned"
-      issues_list.append({
-        'title': issue['title'],
-        'description': issue['description'],
-        'urgency': issue['urgency'],
-        'status': issue['status'],
-        'location': loc_text,
-        'assigned_to': assigned_name,
-        'issue_id': issue.get_id()  # Unique ID for lookup!
-      })
-    self.issues_grid.items = issues_list
+  def load_dashboard(self):
+    """Load admin dashboard"""
+    try:
+      user = anvil.users.get_user()
+      self.load_issues()
+    except Exception as err:
+      anvil.alert(f"Error loading dashboard: {str(err)}")
 
-  def assign_btn_click(self, **event_args):
-    """
-    This code runs when you click the Assign button in a row.
-    """
-    issue = self.item  # This is the issue dictionary for the row you clicked
-    users = app_tables.users.search()
-    user_names = [user['name'] for user in users]
-    selected_user_name = anvil.alert("Select a user to assign this issue:", buttons=user_names)
-    if selected_user_name:
-      selected_user = next(user for user in users if user['name'] == selected_user_name)
-      # Find the actual issue row by its unique ID
-      issue_row = app_tables.issues.get_by_id(issue['issue_id'])
-      if issue_row:
-        issue_row.update(assigned_to=selected_user)
-        anvil.alert("Issue assigned successfully!")
-        self.refresh_issues()  # Refresh the grid after assigning
+  def load_issues(self, filters=None):
+    """Load issues with optional filters"""
+    try:
+      issues = anvil.server.call('get_all_issues', filters)
+      self.issues_grid.rows = [
+        {
+          'title': issue['title'],
+          'description': issue['description'],
+          'urgency': issue['urgency'],
+          'status': issue['status'],
+          'location': str(issue['location']),
+          'assigned_to': issue['assigned_to'] or 'Unassigned'
+        }
+        for issue in issues
+      ]
+    except Exception as err:
+      anvil.alert(f"Error loading issues: {str(err)}")
+
+  def logout_btn_click(self, **event_args):
+    """Logout"""
+    anvil.users.logout()
+    open_form("LoginForm")
+
+  def pending_approvals_link_click(self, **event_args):
+    """Navigate to admin approval form"""
+    open_form("AdminApprovalForm")

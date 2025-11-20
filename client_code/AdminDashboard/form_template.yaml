@@ -1,4 +1,12 @@
 components:
+- layout_properties: {grid_position: 'XRUYYF,GCIVUA'}
+  name: logout_btn
+  properties: {text: Logout}
+  type: Button
+- layout_properties: {grid_position: 'XRUYYF,GFTVQE'}
+  name: pending_approvals_link
+  properties: {text: Pending Admin Approvals}
+  type: Link
 - components:
   - name: repeating_panel_1
     properties: {item_template: AdminDashboard.RowTemplate2}

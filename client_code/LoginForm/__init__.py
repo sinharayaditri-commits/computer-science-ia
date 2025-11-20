@@ -9,7 +9,7 @@ class LoginForm(LoginFormTemplate):
     self.init_components(**properties)
 
   def login_btn_click(self, **event_args):
-    """Handle login"""
+    """Handle login button click"""
     email = self.email_box.text.strip()
     password = self.password_box.text.strip()
 
@@ -21,14 +21,14 @@ class LoginForm(LoginFormTemplate):
       # Authenticate with Anvil
       user = anvil.users.login_with_email(email, password)
     except anvil.users.AuthenticationFailed:
-      anvil.alert("Incorrect email or password.")
+      anvil.alert("❌ Incorrect email or password.")
       return
 
       # Get user details from Users table
     try:
       user_data = app_tables.users.get(email=email)
     except:
-      anvil.alert("User profile not found. Contact admin.")
+      anvil.alert("❌ User profile not found. Contact admin.")
       anvil.users.logout()
       return
 
@@ -37,7 +37,7 @@ class LoginForm(LoginFormTemplate):
 
     # Check if admin is approved
     if role == 'admin' and status != 'approved':
-      anvil.alert("Your admin account is pending approval. Check your email.")
+      anvil.alert("⏳ Your admin account is pending approval. Check your email.")
       anvil.users.logout()
       return
 

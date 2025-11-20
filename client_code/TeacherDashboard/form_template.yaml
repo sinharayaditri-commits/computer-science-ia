@@ -1,3 +1,42 @@
-components: []
+components:
+- components:
+  - layout_properties: {}
+    name: welcome_label
+    properties: {text: 'Welcome, [Your Name]'}
+    type: Label
+  layout_properties: {grid_position: 'ESZMFI,WQIARG'}
+  name: flow_panel_1
+  properties: {}
+  type: FlowPanel
+- layout_properties: {grid_position: 'ESZMFI,NPJBMG'}
+  name: logout
+  properties: {text: Logout}
+  type: Button
+- layout_properties: {grid_position: 'JSMNVU,ZNVXHB'}
+  name: issues_title
+  properties: {text: My Submitted Issues}
+  type: Label
+- layout_properties: {grid_position: 'HGWAVW,FXSZVQ'}
+  name: report_new_issue_btn
+  properties: {text: + Report New Issue}
+  type: Button
+- layout_properties: {grid_position: 'HGWAVW,FHJYLZ'}
+  name: refresh_btn
+  properties: {text: Refresh}
+  type: Button
+- components:
+  - name: repeating_panel_1
+    properties: {item_template: TeacherDashboard.RowTemplate4}
+    type: RepeatingPanel
+  layout_properties: {grid_position: 'LLWLFF,EPWFUQ'}
+  name: issues_grid
+  properties:
+    columns:
+    - {data_key: title, id: HKSBKK, title: title}
+    - {data_key: urgency, id: CRLKRG, title: urgency}
+    - {data_key: status, id: OHDXZU, title: status}
+    - {data_key: created_at, id: RWDQYM, title: created_at}
+    - {data_key: last_updated, id: EXKOBQ, title: last_updated}
+  type: DataGrid
 container: {type: ColumnPanel}
 is_package: true

@@ -1,48 +1,63 @@
 from ._anvil_designer import ReportIssueFormTemplate
-import anvil.users
-import anvil.tables as tables
-from anvil.tables import app_tables
 import anvil.server
+from anvil import open_form
+import anvil
 
 class ReportIssueForm(ReportIssueFormTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
+    self.load_data()
 
-    self.urgency_drop.items = ["High", "Medium", "Low"]
+  def load_data(self):
+    """Load schools and urgency options"""
+    try:
+      # Set urgency options
+      self.urgency_drop.items = ["Low", "Medium", "High", "Critical"]
+      self.urgency_drop.selected_value = "Medium"
 
-    locations = app_tables.location.search()
-    self.location_drop.items = [
-      (f"{loc['branch']} - Floor {loc['floor']} - Room {loc['room']}", loc)
-      for loc in locations
-    ]
+      # Load schools
+      schools = anvil.server.call('get_all_schools')
+      self.location_drop.items = schools
+
+      if schools:
+        self.location_drop.selected_value = schools[0][0]
+    except Exception as err:
+      anvil.alert(f"❌ Error loading data: {str(err)}")
 
   def submit_btn_click(self, **event_args):
-    user = anvil.users.get_user()
-    if not user:
-      alert("Please log in to report an issue.")
-      return
-
-    title = self.title_box.text
-    description = self.desc_area.text
+    """Submit the issue"""
+    title = self.title_box.text.strip()
+    description = self.desc_area.text.strip()
     urgency = self.urgency_drop.selected_value
-    location = self.location_drop.selected_value
+    location_id = self.location_drop.selected_value
 
-    if not title or not description or not urgency or not location:
-      alert("Please fill in all fields.")
+    # Validation
+    if not title or not description:
+      anvil.alert("❌ Please fill in title and description.")
       return
 
-    app_tables.issues.add_row(
-      title=title,
-      description=description,
-      urgency=urgency,
-      status="Open",
-      created_by=user,
-      location=location,
-      created_at=anvil.server.now()
+    if not urgency or not location_id:
+      anvil.alert("❌ Please select urgency and location.")
+      return
+
+      # Submit via server
+    result = anvil.server.call(
+      'submit_issue',
+      title,
+      description,
+      urgency,
+      location_id
     )
 
-    alert("Issue reported successfully!")
+    if result['success']:
+      anvil.alert("✅ " + result['message'])
+      self.clear_form()
+      open_form("TeacherDashboard")
+    else:
+      anvil.alert("❌ " + result['message'])
+
+  def clear_form(self):
+    """Clear all fields"""
     self.title_box.text = ""
     self.desc_area.text = ""
-    self.urgency_drop.selected_value = None
-    self.location_drop.selected_value = None
+    self.urgency_drop.selected_value = "Medium"
