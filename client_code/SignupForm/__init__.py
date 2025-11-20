@@ -1,6 +1,6 @@
 from ._anvil_designer import SignupFormTemplate
-from anvil import open_form
 import anvil.users
+from anvil import open_form
 import anvil.server
 import anvil
 
@@ -11,25 +11,31 @@ class SignupForm(SignupFormTemplate):
     self.role_dropdown.items = ["teacher", "admin"]
 
   def signup_btn_click(self, **event_args):
-    name = self.name_box.text.strip()
-    email = self.email_box.text.strip()
-    password = self.password_box.text
-    role = self.role_dropdown.selected_value
-
-    if not (name and email and password and role):
-      anvil.alert("Please fill in all fields.")
-      return
-
-    # Create the user server-side
     try:
-      user_id = anvil.server.call(
-        "create_user_account",
-        name, email, password, role
-      )
-    except Exception as e:
-      anvil.alert(f"Error creating account: {e}")
-      return
+      if not self.email.text or not self.password.text:
+        Notification("Email and Password cannot be empty!", style="danger").show()
+        return
 
+      name = self.name_box.text
+      email = self.email_box.text
+      password = self.password.text
+      role = self.role_dropdown.selected_value
+
+      result = anvil.server.call('create_user_account', name, email, password, role)
+
+      if result['success']:
+        Notication(result['message'], style="success").show()
+        open_form('LoginForm')
+      else:
+        Notification(result['message'], style="danger").show()
+
+    except Exception as err:
+      Notification(f"Signup failed: [err]", style="danger").show()
+      
+
+    # ---------------------------------------
+    # Redirect after signup
+    # ---------------------------------------
     if role == "teacher":
       anvil.alert("Account created! You can now log in.")
       open_form("LoginForm")

@@ -1,7 +1,7 @@
 from ._anvil_designer import ReportIssueFormTemplate
+import anvil.users
 import anvil.tables as tables
 from anvil.tables import app_tables
-import anvil.users
 import anvil.server
 
 class ReportIssueForm(ReportIssueFormTemplate):

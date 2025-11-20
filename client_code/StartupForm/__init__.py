@@ -1,8 +1,11 @@
 from ._anvil_designer import StartupFormTemplate
-from anvil import open_form
+import anvil.users
 import anvil
+from anvil import open_form
 
 class StartupForm(StartupFormTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    open_form("LoginForm")
+
+    # Delay switching forms until after StartupForm has fully loaded
+    anvil.js.call_js("setTimeout", lambda: open_form("LoginForm"), 0)

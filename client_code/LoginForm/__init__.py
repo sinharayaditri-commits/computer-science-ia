@@ -1,14 +1,13 @@
 from ._anvil_designer import LoginFormTemplate
-from anvil import open_form
 import anvil.users
-import anvil
+from anvil import open_form
 from anvil.tables import app_tables
+import anvil
 
-class LoginForm(LoginFormTemplate):
+class LoginForm(LoginFormTemplate):   # <-- THIS MUST MATCH THE FORM NAME EXACTLY
 
   def __init__(self, **properties):
     self.init_components(**properties)
-    # Do not auto-open other forms here
 
   def login_btn_click(self, **event_args):
     email = self.email_box.text.strip()
@@ -20,11 +19,14 @@ class LoginForm(LoginFormTemplate):
       anvil.alert("Incorrect email or password.")
       return
 
-    # Get user row linked to Anvil User
-    user_row = app_tables.users.get(anvil_user=user)
+    # Get UID
+    uid = user.get_id()
+
+    # Match UID to user_profiles table
+    user_row = app_tables.user_profiles.get(anvil_user=uid)
 
     if not user_row:
-      anvil.alert("Your account is missing profile data. Contact admin.")
+      anvil.alert("Your profile data is missing. Contact admin.")
       return
 
     # Block unapproved admin accounts
@@ -43,21 +45,13 @@ class LoginForm(LoginFormTemplate):
       open_form("TeacherDashboard")
 
   def password_box_pressed_enter(self, **event_args):
-    """Called when Enter is pressed in the password box"""
     self.login_btn_click()
 
   def signup_btn_click(self, **event_args):
-    """This runs when the user clicks the Signup button"""
     open_form("SignupForm")
 
-  def password_box_hide(self, **event_args):
-    """This method is called when the TextBox is removed from the screen"""
-    pass
-
   def signup_link_click(self, **event_args):
-    """This runs when the signup link is clicked"""
     open_form("SignupForm")
 
   def email_box_pressed_enter(self, **event_args):
-    """This runs when Enter is pressed in the email box"""
     self.password_box.focus()

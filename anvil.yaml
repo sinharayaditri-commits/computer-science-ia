@@ -17,11 +17,11 @@ db_schema:
       type: string
     - admin_ui: {width: 200}
       name: assigned_to
-      target: user_profiles
+      target: null
       type: link_single
     - admin_ui: {width: 200}
       name: created_by
-      target: user_profiles
+      target: null
       type: link_single
     - admin_ui: {width: 200}
       name: created_at
@@ -73,9 +73,30 @@ db_schema:
       type: string
     server: full
     title: school
-  user_profiles:
-    client: full
+  users:
+    client: none
     columns:
+    - admin_ui: {width: 200}
+      name: email
+      type: string
+    - admin_ui: {width: 200}
+      name: enabled
+      type: bool
+    - admin_ui: {width: 200}
+      name: last_login
+      type: datetime
+    - admin_ui: {width: 200}
+      name: password_hash
+      type: string
+    - admin_ui: {width: 200}
+      name: n_password_failures
+      type: number
+    - admin_ui: {width: 200}
+      name: confirmed_email
+      type: bool
+    - admin_ui: {width: 200}
+      name: signed_up
+      type: datetime
     - admin_ui: {width: 200}
       name: name
       type: string
@@ -85,12 +106,8 @@ db_schema:
     - admin_ui: {width: 200}
       name: status
       type: string
-    - admin_ui: {width: 200}
-      name: anvil_user
-      target: user_profiles
-      type: link_single
     server: full
-    title: user_profiles
+    title: Users
 dependencies: []
 metadata: {logo_img: 'asset:9b289a8980debf9a7951a2b94cc42673.jpg', title: task manager for IT}
 name: computer science IA
@@ -105,11 +122,11 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/tables.yml
-- client_config: {allow_signup: true, confirm_email: false, enable_automatically: true, require_secure_passwords: true, use_email: true}
-  server_config: {user_table: users}
-  source: /runtime/services/anvil/users.yml
 - client_config: {}
   server_config: {custom_smtp: false, test_mode: true}
   source: /runtime/services/anvil/email.yml
+- client_config: {allow_signup: true, confirm_email: true, enable_automatically: true, require_secure_passwords: true, use_email: true}
+  server_config: {user_table: users}
+  source: /runtime/services/anvil/users.yml
 startup: {module: StartupForm, type: form}
 startup_form: null
