@@ -1,63 +1,54 @@
 from ._anvil_designer import ReportIssueFormTemplate
-import anvil.server
 from anvil import open_form
+import anvil.server
 import anvil
 
 class ReportIssueForm(ReportIssueFormTemplate):
-  def __init__(self, **properties):
+  def __init__(self, user_email=None, **properties):
     self.init_components(**properties)
-    self.load_data()
+    self.user_email = user_email
+    self.load_form_data()
 
-  def load_data(self):
-    """Load schools and urgency options"""
+  def load_form_data(self):
+    """Load schools and locations"""
     try:
-      # Set urgency options
-      self.urgency_drop.items = ["Low", "Medium", "High", "Critical"]
-      self.urgency_drop.selected_value = "Medium"
-
-      # Load schools
       schools = anvil.server.call('get_all_schools')
-      self.location_drop.items = schools
-
-      if schools:
-        self.location_drop.selected_value = schools[0][0]
+      self.school_dropdown.items = schools
     except Exception as err:
-      anvil.alert(f"❌ Error loading data: {str(err)}")
+      anvil.alert(f"Error loading schools: {str(err)}")
+
+  def school_dropdown_change(self, **event_args):
+    """Load locations when school is selected"""
+    try:
+      school_id = self.school_dropdown.selected_value
+      if school_id:
+        locations = anvil.server.call('get_locations_by_school', school_id)
+        self.location_dropdown.items = locations
+    except Exception as err:
+      anvil.alert(f"Error loading locations: {str(err)}")
 
   def submit_btn_click(self, **event_args):
     """Submit the issue"""
-    title = self.title_box.text.strip()
-    description = self.desc_area.text.strip()
-    urgency = self.urgency_drop.selected_value
-    location_id = self.location_drop.selected_value
+    try:
+      title = self.title_box.text.strip()
+      description = self.description_box.text.strip()
+      urgency = self.urgency_dropdown.selected_value
+      location_id = self.location_dropdown.selected_value
 
-    # Validation
-    if not title or not description:
-      anvil.alert("❌ Please fill in title and description.")
-      return
+      if not all([title, description, urgency, location_id]):
+        anvil.alert("Please fill in all fields.")
+        return
 
-    if not urgency or not location_id:
-      anvil.alert("❌ Please select urgency and location.")
-      return
+      result = anvil.server.call('submit_issue', title, description, urgency, location_id, self.user_email)
 
-      # Submit via server
-    result = anvil.server.call(
-      'submit_issue',
-      title,
-      description,
-      urgency,
-      location_id
-    )
+      if result['success']:
+        anvil.alert("✅ Issue submitted successfully!")
+        open_form("TeacherDashboard", user_email=self.user_email)
+      else:
+        anvil.alert(f"❌ {result['message']}")
+    except Exception as err:
+      anvil.alert(f"❌ Error: {str(err)}")
 
-    if result['success']:
-      anvil.alert("✅ " + result['message'])
-      self.clear_form()
-      open_form("TeacherDashboard")
-    else:
-      anvil.alert("❌ " + result['message'])
-
-  def clear_form(self):
-    """Clear all fields"""
-    self.title_box.text = ""
-    self.desc_area.text = ""
-    self.urgency_drop.selected_value = "Medium"
+  def cancel_btn_click(self, **event_args):
+    """Cancel and return to dashboard"""
+    open_form("TeacherDashboard", user_email=self.user_email)

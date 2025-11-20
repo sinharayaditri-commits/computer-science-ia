@@ -4,6 +4,11 @@ from anvil.tables import app_tables
 import anvil.server
 import anvil.email
 from datetime import datetime
+import hashlib
+
+def hash_password(password):
+  """Hash a password using SHA-256"""
+  return hashlib.sha256(password.encode()).hexdigest()
 
 @anvil.server.callable
 def create_user_account(name, email, password, role):
@@ -14,6 +19,7 @@ def create_user_account(name, email, password, role):
     users_row['role'] = role
     users_row['status'] = status
     users_row['name'] = name
+    users_row['password_hash'] = hash_password(password)
     if role == "admin" and status == "pending":
       send_admin_approval_email(email, name)
     return {'success': True, 'message': 'Teacher account created! Log in now.' if role == "teacher" else 'Admin request sent. Check your email for approval instructions.'}
@@ -21,6 +27,31 @@ def create_user_account(name, email, password, role):
     return {'success': False, 'message': 'Email already registered.'}
   except Exception as err:
     return {'success': False, 'message': f'Signup failed: {str(err)}'}
+
+@anvil.server.callable
+def verify_login(email, password):
+  """Verify login credentials against Users table"""
+  try:
+    users = app_tables.users.search(email=email)
+    if not users:
+      return {'success': False, 'message': 'Email not found.'}
+
+    user_data = users[0]
+    stored_hash = user_data['password_hash']
+    entered_hash = hash_password(password)
+
+    if stored_hash != entered_hash:
+      return {'success': False, 'message': 'Incorrect email or password.'}
+
+    role = user_data['role'] or 'teacher'
+    status = user_data['status'] or 'pending'
+
+    if role == 'admin' and status != 'approved':
+      return {'success': False, 'message': 'Your admin account is pending approval.'}
+
+    return {'success': True, 'role': role}
+  except Exception as err:
+    return {'success': False, 'message': f'Login error: {str(err)}'}
 
 @anvil.server.callable
 def send_admin_approval_email(email, name):
@@ -36,12 +67,9 @@ def send_admin_approval_email(email, name):
     return False
 
 @anvil.server.callable
-def submit_issue(title, description, urgency, location_id):
+def submit_issue(title, description, urgency, location_id, user_email):
   try:
-    user = anvil.users.get_user()
-    if not user:
-      return {'success': False, 'message': 'User not logged in.'}
-    user_data = app_tables.users.get(email=user['email'])
+    user_data = app_tables.users.search(email=user_email)[0]
     location = app_tables.location.get_by_id(location_id)
     app_tables.issues.add_row(
       title=title,
@@ -51,12 +79,12 @@ def submit_issue(title, description, urgency, location_id):
       created_by=user_data['name'],
       created_at=datetime.now(),
       last_updated=datetime.now(),
-      reporter_email=user['email'],
+      reporter_email=user_email,
       location=location,
       assigned_to=None,
       resolved_at=None
     )
-    send_issue_submitted_email(user['email'], user_data['name'], title)
+    send_issue_submitted_email(user_email, user_data['name'], title)
     return {'success': True, 'message': 'Issue submitted successfully!'}
   except Exception as err:
     return {'success': False, 'message': f'Failed to submit issue: {str(err)}'}
@@ -75,12 +103,9 @@ def send_issue_submitted_email(email, name, title):
     return False
 
 @anvil.server.callable
-def get_teacher_issues():
+def get_teacher_issues(user_email):
   try:
-    user = anvil.users.get_user()
-    if not user:
-      return []
-    issues = app_tables.issues.search(reporter_email=user['email'])
+    issues = app_tables.issues.search(reporter_email=user_email)
     return [{'id': issue.get_id(), 'title': issue['title'], 'urgency': issue['urgency'], 'status': issue['status'], 'created_at': issue['created_at'], 'last_updated': issue['last_updated']} for issue in issues]
   except Exception as err:
     print(f"Error fetching issues: {str(err)}")
@@ -183,3 +208,15 @@ def get_locations_by_school(school_id):
     return [(l.get_id(), f"{l['branch']} - Floor {l['floor']}") for l in locations]
   except Exception as err:
     return []
+
+@anvil.server.callable
+def get_user_data(email):
+  """Get user data from Users table"""
+  try:
+    user_data = app_tables.users.search(email=email)[0]
+    return {
+      'role': user_data['role'],
+      'status': user_data['status']
+    }
+  except IndexError:
+    return None

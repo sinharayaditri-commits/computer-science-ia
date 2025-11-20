@@ -4,21 +4,29 @@ components:
   properties: {}
   type: TextBox
 - layout_properties: {grid_position: 'ERWNIA,ORRBPW'}
-  name: desc_area
+  name: description_box
   properties: {}
   type: TextArea
 - layout_properties: {grid_position: 'YMQYZT,XTDDTG'}
-  name: urgency_drop
+  name: urgency_dropdown
   properties:
     items: []
   type: DropDown
 - layout_properties: {grid_position: 'GLHRBR,EBZMPO'}
-  name: location_drop
+  name: school_dropdown
+  properties: {}
+  type: DropDown
+- layout_properties: {grid_position: 'FKPJVM,IVQFCV'}
+  name: location_dropdown
   properties: {}
   type: DropDown
 - layout_properties: {grid_position: 'MJMKXI,SWYPML'}
   name: submit_btn
   properties: {text: Report Issue}
+  type: Button
+- layout_properties: {grid_position: 'MJMKXI,ONZIVH'}
+  name: cancel_btn
+  properties: {text: Cancel}
   type: Button
 container: {type: ColumnPanel}
 is_package: true

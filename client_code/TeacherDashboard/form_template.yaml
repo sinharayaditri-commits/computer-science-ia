@@ -8,7 +8,8 @@ components:
   name: flow_panel_1
   properties: {}
   type: FlowPanel
-- layout_properties: {grid_position: 'ESZMFI,NPJBMG'}
+- event_bindings: {click: logout_click}
+  layout_properties: {grid_position: 'ESZMFI,NPJBMG'}
   name: logout
   properties: {text: Logout}
   type: Button
@@ -16,7 +17,8 @@ components:
   name: issues_title
   properties: {text: My Submitted Issues}
   type: Label
-- layout_properties: {grid_position: 'HGWAVW,FXSZVQ'}
+- event_bindings: {click: report_new_issue_btn_click}
+  layout_properties: {grid_position: 'HGWAVW,FXSZVQ'}
   name: report_new_issue_btn
   properties: {text: + Report New Issue}
   type: Button
