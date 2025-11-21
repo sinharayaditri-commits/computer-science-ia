@@ -1,21 +1,41 @@
 components:
+- layout_properties: {grid_position: 'RFGETG,YQFGOV'}
+  name: title_label
+  properties: {text: 'Title:'}
+  type: Label
 - layout_properties: {grid_position: 'RFGETG,VHMOAB'}
   name: title_box
   properties: {}
   type: TextBox
+- layout_properties: {grid_position: 'ERWNIA,RYOWCT'}
+  name: description_label
+  properties: {text: 'Description:'}
+  type: Label
 - layout_properties: {grid_position: 'ERWNIA,ORRBPW'}
   name: description_box
   properties: {}
   type: TextArea
+- layout_properties: {grid_position: 'YMQYZT,PZHAJO'}
+  name: urgency_label
+  properties: {text: 'Urgency:'}
+  type: Label
 - layout_properties: {grid_position: 'YMQYZT,XTDDTG'}
   name: urgency_dropdown
   properties:
     items: []
   type: DropDown
+- layout_properties: {grid_position: 'GLHRBR,BUQKUT'}
+  name: school_label
+  properties: {text: 'School:'}
+  type: Label
 - layout_properties: {grid_position: 'GLHRBR,EBZMPO'}
   name: school_dropdown
   properties: {}
   type: DropDown
+- layout_properties: {grid_position: 'FKPJVM,DNSGNF'}
+  name: location_label
+  properties: {text: 'Location:'}
+  type: Label
 - layout_properties: {grid_position: 'FKPJVM,IVQFCV'}
   name: location_dropdown
   properties: {}
