@@ -3,14 +3,14 @@ import anvil.users
 from anvil.tables import app_tables
 import datetime
 
-@anvil.server.callable
+@anvil.server.  callable
 def create_user_account(name, email, password, role):
   """Create a new user account with profile"""
   try:
     # 1. Create the Anvil user (this adds a row to users table automatically)
-    user = anvil.users.signup_with_email(email, password)
+    user = anvil. users.signup_with_email(email, password)
 
-    # 2.  UPDATE that row with name and role (don't create a new one!)
+    # 2.   UPDATE that row with name and role (don't create a new one!)
     user_row = app_tables.users.get(email=email)
     user_row['name'] = name
     user_row['role'] = role
@@ -21,7 +21,7 @@ def create_user_account(name, email, password, role):
     print(f"Error creating account: {e}")
     return {'success': False, 'message': str(e)}
 
-@anvil.server.callable
+@anvil.server. callable
 def get_user_profile(email):
   """Get user profile - SERVER SIDE"""
   try:
@@ -36,7 +36,7 @@ def get_user_profile(email):
     print(f"Error getting profile: {e}")
     return None
 
-@anvil. server.callable
+@anvil.  server. callable
 def get_teacher_issues(email):
   """Get all issues created by a specific teacher"""
   try:
@@ -52,7 +52,7 @@ def get_all_issues(filters=None):
   except Exception as e:
     return []
 
-@anvil. server.callable
+@anvil.  server.callable
 def submit_issue(title, description, urgency, location_id, reporter_email):
   """Submit a new issue"""
   try:
@@ -63,7 +63,7 @@ def submit_issue(title, description, urgency, location_id, reporter_email):
       location=location_id,
       reporter_email=reporter_email,
       status="open",
-      created_at=datetime. datetime.now()
+      created_at=datetime.  datetime.now()
     )
     return {'success': True, 'message': 'Issue submitted successfully'}
   except Exception as e:
@@ -73,21 +73,25 @@ def submit_issue(title, description, urgency, location_id, reporter_email):
 def get_all_schools():
   """Get list of schools for dropdown"""
   try:
-    schools = app_tables.school. search()
-    return [(row, row['name']) for row in schools]
+    schools = app_tables.school.  search()
+    # Return tuples: (school_row, display_name)
+    return [(school, school['school_name']) for school in schools]
   except Exception as e:
+    print(f"Error getting schools: {e}")
     return []
 
 @anvil.server.callable
-def get_locations_by_school(school_id):
+def get_locations_by_school(school_row):
   """Get locations for selected school"""
   try:
-    locations = app_tables.location.search(school=school_id)
-    return [(row, f"{row['branch']} - Floor {row['floor']} - {row['room']}") for row in locations]
+    locations = app_tables.location. search(school=school_row)
+    # Return tuples: (location_row, display_name)
+    return [(location, f"{location['branch']} - Floor {location['floor']} - {location['room']}") for location in locations]
   except Exception as e:
+    print(f"Error getting locations: {e}")
     return []
 
-@anvil. server.callable
+@anvil.  server.callable
 def get_pending_admins():
   """Get pending admin approvals"""
   try:
@@ -109,8 +113,8 @@ def approve_admin_account(email):
 def reject_admin_account(email):
   """Reject admin account"""
   try:
-    user = app_tables.users. get(email=email)
-    user. delete()
+    user = app_tables.users.  get(email=email)
+    user.  delete()
     return {'success': True, 'message': 'Admin rejected'}
   except Exception as e:
     return {'success': False, 'message': str(e)}
