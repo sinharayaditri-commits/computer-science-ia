@@ -1,14 +1,14 @@
 from ._anvil_designer import SignupFormTemplate
 from anvil import open_form
 import anvil.users
-import anvil.server
+import anvil. server
 import anvil
 
 class SignupForm(SignupFormTemplate):
 
   def __init__(self, **properties):
     self.init_components(**properties)
-    self.role_dropdown.items = ["teacher", "admin"]
+    self.role_dropdown. items = ["teacher", "admin"]
 
   def signup_btn_click(self, **event_args):
     name = self.name_box.text.strip()
@@ -20,26 +20,24 @@ class SignupForm(SignupFormTemplate):
       anvil.alert("Please fill in all fields.")
       return
 
-    # Create the user server-side
     try:
-      user_id = anvil.server.call(
+      result = anvil.server.call(
         "create_user_account",
         name, email, password, role
       )
+
+      if result. get('success'):
+        if role == "teacher":
+          anvil.alert("Account created!  You can now log in.")
+        else:
+          anvil.alert("Admin account request sent.  Await approval.")
+        open_form("LoginForm")
+      else:
+        anvil.alert(f"Error: {result. get('message', 'Unknown error')}")
     except Exception as e:
-      anvil.alert(f"Error creating account: {e}")
-      return
-
-    if role == "teacher":
-      anvil.alert("Account created! You can now log in.")
-      open_form("LoginForm")
-
-    elif role == "admin":
-      anvil.alert("Admin account request sent. Await approval.")
-      open_form("LoginForm")
+      anvil.alert(f"Error creating account: {str(e)}")
 
   def role_dropdown_change(self, **event_args):
-    """This method is called when an item is selected"""
     pass
 
   def email_box_pressed_enter(self, **event_args):

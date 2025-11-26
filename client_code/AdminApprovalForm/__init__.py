@@ -13,10 +13,10 @@ class AdminApprovalForm(AdminApprovalFormTemplate):
       pending = anvil.server.call('get_pending_admins')
       self.data_grid_1.rows = pending
     except Exception as err:
-      anvil.alert(f"Error: {str(err)}")
+      anvil. alert(f"Error: {str(err)}")
 
   def approve_btn_click(self, **event_args):
-    selected = self.data_grid_1.selected_row
+    selected = self.data_grid_1. selected_row
     if not selected:
       anvil.alert("Please select an admin to approve")
       return
@@ -32,7 +32,7 @@ class AdminApprovalForm(AdminApprovalFormTemplate):
     if not selected:
       anvil.alert("Please select an admin to reject")
       return
-    result = anvil.server.call('reject_admin_account', selected['email'])
+    result = anvil. server.call('reject_admin_account', selected['email'])
     if result['success']:
       anvil.alert("Admin rejected!")
       self.load_pending_admins()

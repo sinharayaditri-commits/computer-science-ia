@@ -1,12 +1,18 @@
-# client code: TeacherDashboard.py
 from ._anvil_designer import TeacherDashboardTemplate
 from anvil import open_form
 import anvil.server
 import anvil
+import anvil.users
 
 class TeacherDashboard(TeacherDashboardTemplate):
   def __init__(self, user_email=None, **properties):
     self.init_components(**properties)
+
+    if not user_email:
+      user = anvil.users.get_user()
+      if user:
+        user_email = user['email']
+
     self.user_email = user_email
     self.load_dashboard()
 
@@ -35,4 +41,5 @@ class TeacherDashboard(TeacherDashboardTemplate):
     self.refresh_issues()
 
   def logout_click(self, **event_args):
+    anvil.users.logout()
     open_form("LoginForm")

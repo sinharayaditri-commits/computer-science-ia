@@ -1,4 +1,3 @@
-# client code: ReportIssueForm.py
 from ._anvil_designer import ReportIssueFormTemplate
 from anvil import open_form
 import anvil.server
@@ -13,9 +12,7 @@ class ReportIssueForm(ReportIssueFormTemplate):
   def load_form_data(self):
     try:
       schools = anvil.server.call('get_all_schools')
-      # get_all_schools returns list of (id, label) tuples
       self.school_dropdown.items = schools or []
-      # Optionally clear locations
       self.location_dropdown.items = []
     except Exception as err:
       anvil.alert(f"Error loading schools: {err}")
@@ -36,7 +33,7 @@ class ReportIssueForm(ReportIssueFormTemplate):
       title = (self.title_box.text or "").strip()
       description = (self.description_box.text or "").strip()
       urgency = self.urgency_dropdown.selected_value
-      location_id = self.location_dropdown.selected_value
+      location_id = self.location_dropdown. selected_value
 
       if not all([title, description, urgency]):
         anvil.alert("Please fill in title, description and urgency.")
@@ -49,7 +46,7 @@ class ReportIssueForm(ReportIssueFormTemplate):
       else:
         anvil.alert(result.get('message') or "Failed to submit issue.")
     except Exception as err:
-      anvil.alert(f"Error: {err}")
+      anvil. alert(f"Error: {err}")
 
   def cancel_btn_click(self, **event_args):
-    open_form("TeacherDashboard", user_email=self.user_email)
+    open_form("TeacherDashboard", user_email=self. user_email)
