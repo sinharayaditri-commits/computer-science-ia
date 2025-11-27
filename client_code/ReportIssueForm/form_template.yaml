@@ -28,7 +28,8 @@ components:
   name: school_label
   properties: {text: 'School:'}
   type: Label
-- layout_properties: {grid_position: 'GLHRBR,EBZMPO'}
+- event_bindings: {change: school_dropdown_change}
+  layout_properties: {grid_position: 'GLHRBR,EBZMPO'}
   name: school_dropdown
   properties: {}
   type: DropDown
@@ -36,11 +37,13 @@ components:
   name: location_label
   properties: {text: 'Location:'}
   type: Label
-- layout_properties: {grid_position: 'FKPJVM,IVQFCV'}
+- event_bindings: {change: location_dropdown_change}
+  layout_properties: {grid_position: 'FKPJVM,IVQFCV'}
   name: location_dropdown
   properties: {}
   type: DropDown
-- layout_properties: {grid_position: 'MJMKXI,SWYPML'}
+- event_bindings: {click: submit_btn_click}
+  layout_properties: {grid_position: 'MJMKXI,SWYPML'}
   name: submit_btn
   properties: {text: Report Issue}
   type: Button

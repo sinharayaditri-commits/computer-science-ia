@@ -49,9 +49,6 @@ db_schema:
       target: school
       type: link_single
     - admin_ui: {width: 200}
-      name: branch
-      type: string
-    - admin_ui: {width: 200}
       name: floor
       type: string
     - admin_ui: {width: 200}
@@ -67,9 +64,6 @@ db_schema:
       type: string
     - admin_ui: {width: 200}
       name: campus
-      type: string
-    - admin_ui: {width: 200}
-      name: address
       type: string
     - admin_ui: {width: 200}
       name: school_code
@@ -124,7 +118,7 @@ db_schema:
       name: email_confirmation_key
       type: string
     server: full
-    title: Users
+    title: users
 dependencies: []
 metadata: {logo_img: 'asset:9b289a8980debf9a7951a2b94cc42673.jpg', title: task manager for IT}
 name: computer science IA
