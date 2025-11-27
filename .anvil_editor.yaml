@@ -22,5 +22,4 @@ unique_ids:
   modules: {}
   scripts: {}
   server_modules:
-    IssuesServer: '1764216429311213676017528.62543'
     ServerAuth: '1763357834475735714191291.9481'
