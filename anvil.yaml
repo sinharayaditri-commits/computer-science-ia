@@ -1,7 +1,7 @@
 allow_embedding: false
 db_schema:
   issues:
-    client: none
+    client: full
     columns:
     - admin_ui: {width: 200}
       name: title
@@ -42,7 +42,7 @@ db_schema:
     server: full
     title: issues
   location:
-    client: none
+    client: full
     columns:
     - admin_ui: {width: 200}
       name: school
@@ -57,7 +57,7 @@ db_schema:
     server: full
     title: location
   school:
-    client: none
+    client: full
     columns:
     - admin_ui: {width: 200}
       name: school_name
@@ -82,7 +82,7 @@ db_schema:
     server: full
     title: sessions
   users:
-    client: none
+    client: full
     columns:
     - admin_ui: {width: 200}
       name: email

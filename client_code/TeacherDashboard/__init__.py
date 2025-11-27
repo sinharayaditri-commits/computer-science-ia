@@ -19,9 +19,14 @@ class TeacherDashboard(TeacherDashboardTemplate):
   def load_dashboard(self):
     try:
       if not self.user_email:
-        anvil.alert("User not found. Please log in again.")
+        anvil.alert("User not found.  Please log in again.")
         open_form("LoginForm")
         return
+
+      test_result = anvil.server.call('test_tables')
+      print(f"TEST RESULT: {test_result}")
+      anvil.alert(f"Table test: {test_result['message']}")
+
       self.welcome_label.text = f"Welcome, {self.user_email}!"
       self.refresh_issues()
     except Exception as e:
