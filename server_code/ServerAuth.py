@@ -7,15 +7,11 @@ import datetime
 def create_user_account(name, email, password, role):
   """Create a new user account with profile"""
   try:
-    # 1. Create the Anvil user (this adds a row to users table automatically)
     user = anvil.users.signup_with_email(email, password)
-
-    # 2. UPDATE that row with name and role (don't create a new one!)
     user_row = app_tables.users.get(email=email)
     user_row['name'] = name
     user_row['role'] = role
     user_row['status'] = "pending" if role == "admin" else "approved"
-
     return {'success': True, 'message': 'Account created'}
   except Exception as e:
     print(f"Error creating account: {e}")
@@ -36,23 +32,33 @@ def get_user_profile(email):
     print(f"Error getting profile: {e}")
     return None
 
-@anvil. server.callable
+@anvil.server.callable
 def get_teacher_issues(email):
   """Get all issues created by a specific teacher"""
   try:
-    return app_tables.issues.search(reporter_email=email)
+    print(f"SERVER DEBUG: Looking for issues with reporter_email: {email}")
+    all_issues = app_tables.issues.search()
+    print(f"SERVER DEBUG: Found {len(list(all_issues))} total issues")
+
+    issues = [issue for issue in app_tables.issues.search() if issue['reporter_email'] == email]
+    print(f"SERVER DEBUG: Filtered to {len(issues)} issues for this teacher")
+    return issues
   except Exception as e:
+    print(f"SERVER ERROR: {e}")
+    import traceback
+    traceback.print_exc()
     return []
 
-@anvil.server. callable
+@anvil.server.callable
 def get_all_issues(filters=None):
   """Get all issues for admin dashboard"""
   try:
-    return app_tables.issues.search()
+    return list(app_tables.issues.search())
   except Exception as e:
+    print(f"Error: {e}")
     return []
 
-@anvil. server.callable
+@anvil.server.callable
 def submit_issue(title, description, urgency, location_id, reporter_email):
   """Submit a new issue"""
   try:
@@ -67,52 +73,44 @@ def submit_issue(title, description, urgency, location_id, reporter_email):
     )
     return {'success': True, 'message': 'Issue submitted successfully'}
   except Exception as e:
+    print(f"Error: {e}")
     return {'success': False, 'message': str(e)}
 
-@anvil.server.callable
+@anvil. server.callable
 def get_all_schools():
   """Get list of schools for dropdown"""
   try:
-    print(f"SERVER DEBUG: get_all_schools called")
     schools = app_tables.school.search()
-    print(f"SERVER DEBUG: Found {len(schools)} schools")
-
-    # Return tuples: (display_name, school_row) - LABEL FIRST! 
     result = [(school['school_name'], school) for school in schools]
-    print(f"SERVER DEBUG: Returning {len(result)} schools")
     return result
   except Exception as e:
-    print(f"SERVER ERROR in get_all_schools: {e}")
+    print(f"Error: {e}")
     return []
 
 @anvil.server.callable
 def get_locations_by_school(school_row):
   """Get locations for selected school"""
   try:
-    print(f"SERVER DEBUG: get_locations_by_school called")
     locations = app_tables.location.search(school=school_row)
-    print(f"SERVER DEBUG: Found {len(locations)} locations")
-    # Return tuples: (display_label, location_row) - LABEL FIRST!
     result = [(f"Floor {location['floor']} - {location['room']}", location) for location in locations]
-    print(f"SERVER DEBUG: Returning: {result}")
     return result
   except Exception as e:
-    print(f"SERVER ERROR in get_locations_by_school: {e}")
-    return []
-
-@anvil.server. callable
-def get_pending_admins():
-  """Get pending admin approvals"""
-  try:
-    return app_tables.users.search(role="admin", status="pending")
-  except Exception as e:
+    print(f"Error: {e}")
     return []
 
 @anvil.server.callable
+def get_pending_admins():
+  """Get pending admin approvals"""
+  try:
+    return list(app_tables.users.search(role="admin", status="pending"))
+  except Exception as e:
+    return []
+
+@anvil.server. callable
 def approve_admin_account(email):
   """Approve admin account"""
   try:
-    user = app_tables.users. get(email=email)
+    user = app_tables.users.get(email=email)
     user['status'] = "approved"
     return {'success': True, 'message': 'Admin approved'}
   except Exception as e:
@@ -122,7 +120,7 @@ def approve_admin_account(email):
 def reject_admin_account(email):
   """Reject admin account"""
   try:
-    user = app_tables.users. get(email=email)
+    user = app_tables.users.get(email=email)
     user. delete()
     return {'success': True, 'message': 'Admin rejected'}
   except Exception as e:

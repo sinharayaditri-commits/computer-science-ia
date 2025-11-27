@@ -33,6 +33,7 @@ class TeacherDashboard(TeacherDashboardTemplate):
       self.issues_grid.rows = issues
     except Exception as e:
       anvil.alert(f"Error fetching issues: {e}")
+      print(f"ERROR: {e}")
 
   def report_new_issue_btn_click(self, **event_args):
     open_form("ReportIssueForm", user_email=self.user_email)

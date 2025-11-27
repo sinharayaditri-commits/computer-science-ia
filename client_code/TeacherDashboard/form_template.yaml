@@ -22,7 +22,8 @@ components:
   name: report_new_issue_btn
   properties: {text: + Report New Issue}
   type: Button
-- layout_properties: {grid_position: 'HGWAVW,FHJYLZ'}
+- event_bindings: {click: refresh_btn_click}
+  layout_properties: {grid_position: 'HGWAVW,FHJYLZ'}
   name: refresh_btn
   properties: {text: Refresh}
   type: Button
