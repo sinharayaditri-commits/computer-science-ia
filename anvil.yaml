@@ -1,42 +1,40 @@
 allow_embedding: false
 db_schema:
   issues:
-    client: search
+    client: none
     columns:
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 0, width: 200}
       name: title
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 1, width: 200}
       name: description
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 2, width: 200}
       name: urgency
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 3, width: 200}
       name: status
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 4, width: 200}
       name: assigned_to
-      target: null
-      type: link_single
-    - admin_ui: {width: 200}
+      type: string
+    - admin_ui: {order: 5, width: 200}
       name: created_by
-      target: null
-      type: link_single
-    - admin_ui: {width: 200}
+      type: string
+    - admin_ui: {order: 6, width: 200}
       name: created_at
       type: datetime
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 7, width: 200}
       name: resolved_at
       type: datetime
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 8, width: 200}
       name: location
       target: location
       type: link_single
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 9, width: 200}
       name: reporter_email
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 10, width: 200}
       name: last_updated
       type: datetime
     server: full

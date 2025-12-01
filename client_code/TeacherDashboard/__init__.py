@@ -35,10 +35,21 @@ class TeacherDashboard(TeacherDashboardTemplate):
   def refresh_issues(self):
     try:
       issues = anvil.server.call('get_teacher_issues', self.user_email)
-      self.issues_grid.rows = issues
+
+      # DEBUG - Let's see what we got! 
+      print(f"DEBUG: Got {len(issues)} issues from server")
+      print(f"DEBUG: Issues data: {issues}")
+
+      if issues:
+        print(f"DEBUG: First issue: {issues[0]}")
+
+      self.issues_grid.items = issues
+      print(f"DEBUG: Set issues_grid. items successfully")
+
     except Exception as e:
-      anvil.alert(f"Error fetching issues: {e}")
-      print(f"ERROR: {e}")
+      print(f"ERROR in refresh_issues: {e}")
+      import traceback
+      traceback. print_exc()
 
   def report_new_issue_btn_click(self, **event_args):
     open_form("ReportIssueForm", user_email=self.user_email)

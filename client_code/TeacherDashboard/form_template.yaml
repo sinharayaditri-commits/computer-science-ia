@@ -29,23 +29,16 @@ components:
   type: Button
 - components:
   - name: repeating_panel_1
-    properties: {item_template: TeacherDashboard.issues_grid_row_template}
+    properties: {item_template: TeacherDashboard.RowTemplate3}
     type: RepeatingPanel
-  layout_properties: {grid_position: 'VJMRQR,DKXYZP'}
+  layout_properties: {grid_position: 'SWIPIA,LRKWYA'}
   name: issues_grid
   properties:
     columns:
-    - {data_key: title, id: BXSZSB, title: title}
-    - {data_key: description, id: GVQSWC, title: description}
-    - {data_key: urgency, id: AAWQAB, title: urgency}
-    - {data_key: status, id: MWWWOB, title: status}
-    - {data_key: assigned_to, id: VRKKKC, title: assigned_to}
-    - {data_key: created_by, id: RPQAHT, title: created_by}
-    - {data_key: created_at, id: KGOEVD, title: created_at}
-    - {data_key: resolved_at, id: CQAYRH, title: resolved_at}
-    - {data_key: location, id: AKVQWM, title: location}
-    - {data_key: reporter_email, id: BNOJWG, title: reporter_email}
-    - {data_key: last_updated, id: WIOUGS, title: last_updated}
+    - {data_key: title, id: HTBRLL, title: title}
+    - {data_key: urgency, id: UUKQMD, title: urgency}
+    - {data_key: status, id: ASESZT, title: status}
+    - {data_key: location, id: QMIJTC, title: location}
   type: DataGrid
 container: {type: ColumnPanel}
 is_package: true
