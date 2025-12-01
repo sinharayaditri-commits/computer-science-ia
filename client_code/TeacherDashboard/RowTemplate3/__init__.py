@@ -5,8 +5,12 @@ class RowTemplate3(RowTemplate3Template):
   def __init__(self, **properties):
     self.init_components(**properties)
 
-    # Display the data
-    self.label_title.text = self.item.get('title', '')
-    self.label_urgency.text = self.item. get('urgency', '')
-    self. label_status.text = self.item. get('status', '')
-    self.label_location.text = self.item.get('location', '')
+    # DEBUG - Is this even running?
+    print(f"ROW TEMPLATE: Loading row with data: {self.item}")
+
+    self.title_label. text = self.item.get('title', '')
+    self.urgency_label.text = self.item. get('urgency', '')
+    self. status_label.text = self.item. get('status', '')
+    self.location_label.text = self.item.get('location', '')
+
+    print(f"ROW TEMPLATE: Set labels successfully!")
