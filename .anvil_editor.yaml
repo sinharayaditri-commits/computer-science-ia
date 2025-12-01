@@ -17,8 +17,7 @@ unique_ids:
     SignupForm: '1763357606003665292437785.6571'
     StartupForm: OEXKDJV23W4VBP4EZICJ47R3NVOKAWZ7
     TeacherDashboard: '1759203447419788954607167.8225'
-    TeacherDashboard.RowTemplate3: '1763620785302686221874743.0267'
-    TeacherDashboard.RowTemplate4: '1763620971421930990139574.0745'
+    TeacherDashboard.issues_grid_row_template: '1763620785302686221874743.0267'
   modules: {}
   scripts: {}
   server_modules:
