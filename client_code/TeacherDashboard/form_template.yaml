@@ -27,19 +27,72 @@ components:
   name: refresh_btn
   properties: {text: Refresh}
   type: Button
+- layout_properties: {grid_position: 'VILBOQ,HNBDEI'}
+  name: spacer_1
+  properties: {height: 32}
+  type: Spacer
 - components:
-  - layout_properties: {}
-    name: repeating_panel_1
-    properties: {item_template: TeacherDashboard.RowTemplate3}
-    type: RepeatingPanel
-  layout_properties: {grid_position: 'SWIPIA,LRKWYA'}
-  name: issues_grid
-  properties:
-    columns:
-    - {data_key: title, id: HTBRLL, title: title}
-    - {data_key: urgency, id: UUKQMD, title: urgency}
-    - {data_key: status, id: ASESZT, title: status}
-    - {data_key: location, id: QMIJTC, title: location}
-  type: DataGrid
+  - layout_properties: {grid_position: 'IHCNZQ,XRIRNN'}
+    name: label_1
+    properties: {align: center, text: Issues Data Information}
+    type: Label
+  - layout_properties: {grid_position: 'RCZIWZ,QVRYSR'}
+    name: label_2
+    properties: {text: 'Title:'}
+    type: Label
+  - layout_properties: {grid_position: 'RCZIWZ,WBACEC'}
+    name: title_label
+    properties: {}
+    type: Label
+  - layout_properties: {grid_position: 'HFBSDF,VEADMF'}
+    name: label_3
+    properties: {text: 'Urgency:'}
+    type: Label
+  - layout_properties: {grid_position: 'HFBSDF,YQFLUL'}
+    name: urgency_label
+    properties: {}
+    type: Label
+  - layout_properties: {grid_position: 'HXMWRR,FQNDEE'}
+    name: label_4
+    properties: {text: 'Status:'}
+    type: Label
+  - layout_properties: {grid_position: 'HXMWRR,MMQEYW'}
+    name: status_label
+    properties: {}
+    type: Label
+  - layout_properties: {grid_position: 'NJZUWI,HOOCBB'}
+    name: label_5
+    properties: {text: 'Location:'}
+    type: Label
+  - layout_properties: {grid_position: 'NJZUWI,ZRGPHH'}
+    name: location_label
+    properties: {}
+    type: Label
+  - layout_properties: {grid_position: 'UICVGK,ONVZTW'}
+    name: label_6
+    properties: {text: 'Description:'}
+    type: Label
+  - layout_properties: {grid_position: 'UICVGK,IDGAQS'}
+    name: description_label
+    properties: {}
+    type: Label
+  - event_bindings: {click: previous_btn_click}
+    layout_properties: {grid_position: 'UNWSOI,XCZPDV'}
+    name: previous_btn
+    properties: {text: Previous Data}
+    type: Button
+  - layout_properties: {grid_position: 'UNWSOI,INIIPR'}
+    name: issue_counter_label
+    properties: {}
+    type: Label
+  - event_bindings: {click: next_btn_click}
+    layout_properties: {grid_position: 'UNWSOI,AQQUGY'}
+    name: next_btn
+    properties: {text: Next Data}
+    type: Button
+  layout_properties: {grid_position: 'CTRRGD,HFAYTY'}
+  name: issue_card
+  properties: {role: outlined-card}
+  type: ColumnPanel
 container: {type: ColumnPanel}
 is_package: true
