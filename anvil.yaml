@@ -137,5 +137,5 @@ services:
 - client_config: {allow_signup: true, confirm_email: true, enable_automatically: true, require_secure_passwords: true, use_email: true}
   server_config: {user_table: users}
   source: /runtime/services/anvil/users.yml
-startup: {module: StartupForm, type: form}
+startup: {module: AdminApprovalForm, type: form}
 startup_form: null

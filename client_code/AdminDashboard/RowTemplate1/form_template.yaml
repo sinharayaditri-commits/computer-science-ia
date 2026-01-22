@@ -1,3 +1,39 @@
-components: []
+components:
+- data_bindings:
+  - {code: 'self.item[''description'']', property: text, writeback: false}
+  layout_properties: {column: NQEFSH}
+  name: description_label
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''urgency'']', property: text, writeback: false}
+  layout_properties: {column: WWIJNB}
+  name: urgency_label
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''status'']', property: text, writeback: false}
+  layout_properties: {column: JOLODM}
+  name: status_label
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''location'']', property: text, writeback: false}
+  layout_properties: {column: XPRTBK}
+  name: location_label
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''assigned_to'']', property: text, writeback: false}
+  layout_properties: {column: QUSKBD}
+  name: assigned_to_label
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''title'']', property: text, writeback: false}
+  layout_properties: {column: XMLDLF}
+  name: title_label
+  properties: {}
+  type: Label
 container: {type: DataRowPanel}
 is_package: true

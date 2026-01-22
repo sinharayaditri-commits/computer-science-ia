@@ -2,28 +2,31 @@ from ._anvil_designer import LoginFormTemplate
 from anvil import open_form
 import anvil.users
 import anvil
-import anvil.  server
+import anvil.server
 
 class LoginForm(LoginFormTemplate):
 
   def __init__(self, **properties):
     self.init_components(**properties)
+    # Initialize button with show password state
+    self.button_1.text = 'Show Password'
+    self.button_1.icon = 'fa:eye'
 
   def login_btn_click(self, **event_args):
-    email = self. email_box.text.  strip()
-    password = self.  password_box. text
+    email = self.email_box.text. strip()
+    password = self. password_box.text
 
-    print(f"DEBUG: Attempting login with email: {email}")
+    print(f"DEBUG:  Attempting login with email: {email}")
 
     try:
-      user = anvil. users.login_with_email(email, password)
-      print(f"DEBUG: Anvil auth successful for {email}")
+      user = anvil.users.login_with_email(email, password)
+      print(f"DEBUG:  Anvil auth successful for {email}")
     except anvil.users.AuthenticationFailed as e:
       error_msg = str(e)
-      print(f"DEBUG: Anvil auth FAILED: {error_msg}")
+      print(f"DEBUG:  Anvil auth FAILED:  {error_msg}")
 
       # If email not confirmed, skip to database check for TESTING
-      if "confirmed your email" in error_msg:
+      if "confirmed your email" in error_msg: 
         print(f"DEBUG: Email not confirmed - skipping Anvil, checking database directly")
         # Continue to database check below
       else:
@@ -34,7 +37,7 @@ class LoginForm(LoginFormTemplate):
       anvil.alert(f"Login error: {e}")
       return
 
-    print(f"DEBUG: Checking user profile in database...")
+    print(f"DEBUG:  Checking user profile in database...")
     try:
       user_data = anvil.server.call('get_user_profile', email)
       print(f"DEBUG: User data from database: {user_data}")
@@ -42,8 +45,8 @@ class LoginForm(LoginFormTemplate):
         anvil.alert("User profile not found.  Please sign up first.")
         return
     except Exception as e:
-      print(f"DEBUG: Error getting profile: {e}")
-      anvil. alert(f"Error: {str(e)}")
+      print(f"DEBUG: Error getting profile:  {e}")
+      anvil.alert(f"Error:  {str(e)}")
       return
 
     print(f"DEBUG: User role is: {user_data['role']}")
@@ -52,10 +55,10 @@ class LoginForm(LoginFormTemplate):
       return
 
     if user_data['role'] == "admin":
-      print(f"DEBUG: Routing to AdminDashboard")
+      print(f"DEBUG:  Routing to AdminDashboard")
       open_form("AdminDashboard")
     else:
-      print(f"DEBUG: Routing to TeacherDashboard with email {email}")
+      print(f"DEBUG:  Routing to TeacherDashboard with email {email}")
       open_form("TeacherDashboard", user_email=email)
 
   def password_box_pressed_enter(self, **event_args):
@@ -68,4 +71,22 @@ class LoginForm(LoginFormTemplate):
     open_form("SignupForm")
 
   def email_box_pressed_enter(self, **event_args):
-    self.password_box.focus()
+    self.password_box. focus()
+
+  def button_1_click(self, **event_args):
+    """Toggle password visibility"""
+    try: 
+      if self.password_box.hide_text:
+        # Password is hidden - SHOW it
+        self.password_box. hide_text = False
+        self.button_1.text = 'Hide Password'
+        self. button_1.icon = 'fa:eye-slash'
+      else:
+        # Password is visible - HIDE it
+        self. password_box.hide_text = True
+        self.button_1.text = 'Show Password'
+        self.button_1.icon = 'fa:eye'
+      print(f"DEBUG: Password visibility toggled.  Hide text: {self.password_box.hide_text}")
+    except Exception as err: 
+      print(f"Error toggling password:  {err}")
+      anvil.alert(f"Error toggling password: {err}")
