@@ -4,7 +4,8 @@ components:
   name: logout_btn
   properties: {text: Logout}
   type: Button
-- layout_properties: {grid_position: 'XRUYYF,GFTVQE'}
+- event_bindings: {}
+  layout_properties: {grid_position: 'XRUYYF,GFTVQE'}
   name: pending_approvals_link
   properties: {text: Pending Admin Approvals}
   type: Link

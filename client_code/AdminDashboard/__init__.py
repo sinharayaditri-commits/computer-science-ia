@@ -44,6 +44,7 @@ class AdminDashboard(AdminDashboardTemplate):
     open_form("LoginForm")
     print("DEBUG: Redirecting to LoginForm")
 
+  @anvil.handle("pending_approvals_link", "click")
   def pending_approvals_link_click(self, **event_args):
     """Navigate to admin approval form"""
     open_form("AdminApprovalForm")
